@@ -1,0 +1,8 @@
+.movies {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 70px 70px 80px;
+  margin: 0;
+}
