@@ -50,3 +50,54 @@
   max-width: 90px;
   color: #FFF;
 }
+
+@media (max-width: 870px) {
+  .techs {
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
+
+  .techs__subtitle {
+    margin: 80px 0 22px;
+  }
+
+  .techs__text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .teachs__table {
+    margin: 83px 0 0;
+  }
+
+  .teachs__item {
+    width: 84px;
+    padding: 20px 0 20px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
+
+@media (max-width: 720px) {
+  .teachs__table {
+    grid-template-columns: repeat(auto-fit, minmax(90px, max-content));
+  }
+}
+
+@media (max-width: 400px) {
+  .techs {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    background: #202020;
+  }
+
+  .techs__subtitle {
+    margin: 60px 0 24px;
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .teachs__table {
+    margin: 50px 0 0;
+  }
+}

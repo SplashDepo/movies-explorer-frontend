@@ -117,3 +117,73 @@
 .auth__redirect-link:hover {
   opacity: 0.6;
 }
+
+@media (max-width: 800px) {
+  .auth {
+    margin: 40px auto 0;
+  }
+
+  .auth__welcome_profile {
+    margin: 196px 0 96px;
+  }
+
+  .auth__button_profile {
+    margin: 150px 0 0;
+  }
+}
+
+@media (max-width: 450px) {
+
+  .auth {
+    margin: 56px auto 0;
+  }
+
+  .auth__welcome {
+    margin: 0 0 70px;
+  }
+
+  .auth__welcome_profile {
+    margin: 14px 0 80px;
+  }
+
+  .auth__welcome_login {
+    text-align: center;
+  }
+
+  .auth__form {
+    width: 260px;
+  }
+
+  .auth__button {
+    width: 260px;
+    margin: 340px 0 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .auth__button_active {
+    margin: 310px 0 14px;
+  }
+
+  .auth__button_active_up {
+    margin: 250px 0 14px;
+  }
+
+  .auth__button_profile {
+    margin: 327px 0 0;
+  }
+
+  .auth__redirect-text {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .auth__redirect-link {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .auth__redirect-link_type_profile {
+    font-size: 12px;
+  }
+}

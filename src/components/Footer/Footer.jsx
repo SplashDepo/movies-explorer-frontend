@@ -31,13 +31,6 @@ function Footer() {
                 rel="noreferrer noopener">
                 <p className="footer__text_link-text footer__text">Github</p>
               </a>
-              <a
-                href="https://vk.com/yandex.practicum"
-                target="_blank"
-                className="footer__link link-click"
-                rel="noreferrer noopener">
-                <p className="footer__text_link-text footer__text">ВКонтакте</p>
-              </a>
             </nav>
           </div>
         </>
