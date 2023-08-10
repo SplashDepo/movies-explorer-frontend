@@ -12,20 +12,20 @@ function FormPassword() {
   }
 
   return (
-    <div className="info__container">
-      <label htmlFor="password" className={`info__label ${!islocationProfile ? "info__label_active" : ""}`}>Пароль</label>
+    <div className="info-container">
+      <label htmlFor="password" className={`info-container__label ${!islocationProfile ? "info-container__label_active" : ""}`}>Пароль</label>
 
       <input
         id="password"
         name="password"
         type="password"
-        className={`info__input ${!islocationProfile ? "info__input_active" : ""} ${!isCorrectly ? "info__input_error" : ""}`}
+        className={`info-container__input ${!islocationProfile ? "info-container__input_active" : ""} ${!isCorrectly ? "info-container__input_error" : ""}`}
         required
         minLength="6"
         maxLength="20"
         onChange={handleChange}
       />
-      <span className={`info__error ${!isCorrectly ? "pinfo__error_active" : ""}`}>Что-то пошло не так...</span>
+      <span className={`info-container__error ${!isCorrectly ? "info-container__error_active" : ""}`}>Что-то пошло не так...</span>
     </div>
   );
 }
