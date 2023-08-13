@@ -1,6 +1,5 @@
 import { MOVIES_SERVER_URL, BASE_URL } from './utils';
 
-// возврат ответа сервера об ошибке
 const handleResponse = (res) => {
   if (res.ok) {
     return res.json();
@@ -8,7 +7,6 @@ const handleResponse = (res) => {
   return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-// регистрация
 export const register = ({ name, email, password }) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
@@ -26,7 +24,6 @@ export const register = ({ name, email, password }) => {
     .then(response => handleResponse(response));
 }
 
-// вход в профиль
 export const login = ({ email, password }) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
@@ -43,7 +40,6 @@ export const login = ({ email, password }) => {
     .then(response => handleResponse(response));
 }
 
-// выход из профиля
 export const signOut = () => {
   return fetch(`${BASE_URL}/logout`, {
     method: "GET",
@@ -57,7 +53,6 @@ export const signOut = () => {
 
 }
 
-// редактирование профиля
 export const setProfile = ({ name, email }) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'PATCH',
@@ -74,7 +69,6 @@ export const setProfile = ({ name, email }) => {
     .then(response => handleResponse(response));
 }
 
-// проверка профиля
 export const getUser = () => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
@@ -87,7 +81,6 @@ export const getUser = () => {
     .then(response => handleResponse(response));
 }
 
-// проверка профиля
 export const checkToken = () => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
@@ -101,7 +94,6 @@ export const checkToken = () => {
 }
 
 
-// сохранение фильма
 export const saveMovie = (movie) => {
 
   return fetch(`${BASE_URL}/movies`, {
@@ -128,7 +120,6 @@ export const saveMovie = (movie) => {
     .then(response => handleResponse(response));
 }
 
-// получение сохраненных фильмов
 export const getMoviesSaved = () => {
   return fetch(`${BASE_URL}/movies`, {
     method: "GET",
@@ -141,7 +132,6 @@ export const getMoviesSaved = () => {
     .then(response => handleResponse(response));
 }
 
-// удаление сохраненного фильма
 export const deleteMovieSaved = (movieId) => {
   return fetch(`${BASE_URL}/movies/${movieId}`, {
     method: "DELETE",
