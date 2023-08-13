@@ -1,0 +1,112 @@
+.card {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.card__description {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin: 16px 0;
+  padding: 0;
+}
+
+.card__info {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+
+.card__title {
+  margin: 0;
+  padding: 0;
+  color: #FFF;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card__length {
+  margin: 0;
+  padding-top: 5px;
+  border-top: 1px solid #424242;
+  color: #8B8B8B;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card__emotion {
+  max-width: 24px;
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  background-image: url("../../images/icon/save-movie.svg");
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  transition: 2s;
+  background-size: 100% 100%;
+
+}
+
+.card__emotion:hover {
+  opacity: .6;
+}
+
+.card__emotion_active {
+  opacity: 1;
+  background-image: url("../../images/icon/save-movie-active.svg");
+}
+
+.card__close {
+  background: url("../../images/icon/close.svg") center / 9px no-repeat, #313131;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  max-width: 24px;
+  width: 100%;
+  height: 24px;
+  transition: .4s;
+}
+
+.card__close:hover {
+  opacity: 0.6;
+}
+
+.card__close_visible {
+  visibility: visible;
+}
+
+.card__close_hidden {
+  visibility: hidden;
+}
+
+.card__trailer {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.card__image {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  display: block;
+  object-fit: cover;
+}
