@@ -1,0 +1,48 @@
+.input__wrapper {
+  min-height: 89px;
+}
+
+.input__wrapper:not(:last-child) {
+  margin-bottom: 7px;
+}
+
+.input__label {
+  margin-bottom: 10px;
+  display: block;
+  color: #8b8b8b;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.input__field {
+  box-sizing: border-box;
+  padding: 15px 15px;
+  width: 100%;
+  color: #fff;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 8px;
+  background: #2f2f2f;
+  border: none;
+}
+
+.input__field:focus {
+  outline: none;
+}
+
+.input__error {
+  margin-top: 5px;
+  display: none;
+  color: #ee3465;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.input__error_visible {
+  display: block;
+}

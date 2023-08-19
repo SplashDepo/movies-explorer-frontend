@@ -1,67 +1,149 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import MoviesCard from '../MoviesCard/MoviesCard';
-import NoResult from '../NoResult/NoResult';
-import './MoviesCardList.css';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import "./MoviesCardList.css"
 
-function MoviesCardList(props) {
+import Preloader from "../Preloader/Preloader";
+import MoviesCard from "../MoviesCard/MoviesCard";
+
+import useWindowDimensions from "../../hooks/useWindowDimensions";
+
+import {
+  ENDPOINT_MOVIES,
+  LAPTOP_SCREEN_WIDTH,
+  MOBILE_SCREEN_WIDTH,
+  NUM_CARDS_DESKTOP_INIT,
+  NUM_CARDS_TABLET_INIT,
+  NUM_CARDS_MOBILE_INIT,
+  NUM_CARDS_DESKTOP_ADD,
+  NUM_CARDS_TABLET_ADD,
+  NUM_CARDS_MOBILE_ADD,
+} from "../../utils/constants";
+
+function MoviesCardList({
+  movies,
+  onMovieSelect,
+  onLoad,
+  hasUserSearched,
+  error,
+}) {
   const location = useLocation();
-  const isLocationMovies = location.pathname === '/movies';
+  const pathMovies = location.pathname === ENDPOINT_MOVIES;
+
+  const windowWidth = useWindowDimensions();
+  const isDesktop = windowWidth > LAPTOP_SCREEN_WIDTH;
+  const isTablet =
+    windowWidth > MOBILE_SCREEN_WIDTH && windowWidth <= LAPTOP_SCREEN_WIDTH;
+
+  const [visibleCards, setVisibleCards] = useState(0);
 
   useEffect(() => {
-    if (isLocationMovies) {
-      props.isErrorMovies && props.isSearching();
-      props.isErrorMovies && props.isVisibleMovies === null && props.isSearching();
-      props.isVisibleMovies !== null && props.isSearching();
+
+    if (
+      [
+        NUM_CARDS_DESKTOP_INIT,
+        NUM_CARDS_TABLET_INIT,
+        NUM_CARDS_MOBILE_INIT,
+        0,
+      ].includes(visibleCards)
+    ) {
+      setVisibleCards(
+        isDesktop
+          ? NUM_CARDS_DESKTOP_INIT
+          : isTablet
+            ? NUM_CARDS_TABLET_INIT
+            : NUM_CARDS_MOBILE_INIT
+      );
     }
-  }, [props.isVisibleMovies, props.isErrorMovies]);
+
+    if (
+      isDesktop &&
+      visibleCards % 3 !== 0 &&
+      ![
+        NUM_CARDS_DESKTOP_INIT,
+        NUM_CARDS_TABLET_INIT,
+        NUM_CARDS_MOBILE_INIT,
+        0,
+      ].includes(visibleCards)
+    ) {
+      setVisibleCards((prevVal) =>
+        prevVal % 3 === 1 ? prevVal + 2 : prevVal + 1
+      );
+    }
+
+    if (isTablet && visibleCards % 2 !== 0) {
+      setVisibleCards((prevVal) => prevVal + 1);
+    }
+  }, [windowWidth]);
+
+  function renderCards() {
+    return (
+      <div className="movies-gallery__movies">
+        {(movies?.length &&
+          (pathMovies
+            ? movies.slice(0, visibleCards)
+            : movies.slice().reverse()
+          ).map((movie) => (
+            <MoviesCard
+              key={movie.id || movie.movieId}
+              movie={movie}
+              onMovieSelect={onMovieSelect}
+            />
+          ))) ||
+          ""}
+      </div>
+    );
+  }
+
+  function setMoreCards() {
+    setVisibleCards(
+      (prevVal) =>
+        prevVal +
+        (isDesktop
+          ? NUM_CARDS_DESKTOP_ADD
+          : isTablet
+            ? NUM_CARDS_TABLET_ADD
+            : NUM_CARDS_MOBILE_ADD)
+    );
+  }
+  function renderResults() {
+    if (onLoad) return <Preloader />;
+
+    if (hasUserSearched && !movies?.length && !error?.moviesResponse) {
+      return <p className="paragraph">Ничего не найдено</p>;
+    }
+
+    if (hasUserSearched && !movies?.length && error?.moviesResponse) {
+      return (
+        <p className="paragraph paragraph_type_error">
+          {error?.moviesResponse}
+        </p>
+      );
+    }
+
+    return renderCards();
+  }
 
   return (
+    <section
+      className="movies-gallery"
+      aria-label="Галерея с карточками фильмов"
+    >
+      <div className="wrapper movies-gallery__wrapper">
+        {renderResults()}
 
-    (props.isSearching || !isLocationMovies) && (
-      <section className="movies-list">
-
-        {props.isErrorMovies === true && !isLocationMovies && (
-          <NoResult text={"К сожалению, во время запроса произошла ошибка. Попробуйте еще раз."} />
-        )}
-
-        {(isLocationMovies || props.storedMovies.length !== 0) && props.isErrorMovies === false && props.isVisibleMovies && props.isVisibleMovies.length === 0 && (
-          <NoResult text={"К сожалению, по вашему запросу ничего не найдено."} />
-        )}
-
-        {!isLocationMovies && props.storedMovies.length === 0 && props.isErrorMovies === false && (
-          <NoResult text={"В вашем списке сохраненных фильмов ничего нет."} />
-        )}
-
-
-        <ul className="movies-list__table">
-          {props.isVisibleMovies &&
-            props.isVisibleMovies.map((movie) => {
-              return (
-                <MoviesCard
-                  key={movie.id || movie.movieId}
-                  movie={movie}
-                  storedMovies={props.storedMovies}
-                />
-              );
-            })
-          }
-        </ul>
-
-        {isLocationMovies && !props.isAllMovies && props.isVisibleMovies && props.isVisibleMovies.length !== 0 && (
+        {visibleCards < movies?.length && pathMovies && (
           <button
+            className="movies-gallery__btn-more"
             type="button"
-            aria-label="Загрузить еще карточки"
-            onClick={props.onOtherVisibleMovies}
-            className="movies-list__button"
-          >Ещё</button>
-        )
-        }
-
-      </section>
-    )
+            aria-label="Отображение новых карточек с фильмами в галерее"
+            onClick={() => setMoreCards()}
+          >
+            Ещё
+          </button>
+        )}
+      </div>
+    </section>
   );
-
 }
 
 export default MoviesCardList;

@@ -1,26 +1,95 @@
-import React from "react";
-import { useLocation, NavLink } from 'react-router-dom';
-import Navigation from '../Navigation/Navigation';
-import logo from '../../images/logo.svg'
-import './Header.css';
+import React, { useState } from "react";
+import "./Header.css"
+import { Outlet, Link, useLocation } from "react-router-dom";
 
-function Header(props) {
+
+import useWindowDimensions from "../../hooks/useWindowDimensions.js";
+
+import Logo from "../Logo/Logo.jsx";
+import Navigation from "../Navigation/Navigation.jsx";
+
+import HamburgerMenu from "../HamburgerMenu/HamburgerMenu.jsx";
+
+import {
+  ENDPOINT_SIGNUP,
+  ENDPOINT_SIGNIN,
+  TABLET_SCREEN_WIDTH,
+} from "../../utils/constants.js";
+
+function Header({ isCurrentUserLoggedIn }) {
   const location = useLocation();
   const islocationBasic = location.pathname === "/";
-  const islocationPrivateIn = location.pathname === "/sign-in";
-  const islocationPrivateUp = location.pathname === "/sign-up";
+  const [isModalWindowOpened, setIsModalWindowOpened] = useState(false);
+  const [isHamburgerMenuOpened, setIsHamburgerMenuOpened] = useState(false);
+
+  function openModalWindow() {
+    setIsModalWindowOpened(true);
+  }
+
+  function toggleHamburgerMenu() {
+    if (!isModalWindowOpened) {
+      openModalWindow();
+    }
+
+    setIsHamburgerMenuOpened(!isHamburgerMenuOpened);
+  }
+
+  const isMobileWidth = useWindowDimensions() <= TABLET_SCREEN_WIDTH;
+
+  function renderHeaderMenu() {
+    if (isMobileWidth && isCurrentUserLoggedIn) {
+      return (
+        <button
+          className={`hamburger${(isHamburgerMenuOpened && " hamburger_clicked") || ""
+            }`}
+          type="button"
+          aria-label="Гамбургер-меню с навигацией по приложению"
+          onClick={() => toggleHamburgerMenu()}
+        >
+          <span className="hamburger__line"></span>
+          <span className="hamburger__line"></span>
+          <span className="hamburger__line"></span>
+        </button>
+      );
+    }
+
+    if (!isCurrentUserLoggedIn) {
+      return (
+        <div className="header__auth">
+          <Link className="header__link" to={ENDPOINT_SIGNUP}>
+            Регистрация
+          </Link>
+          <Link
+            className="header__link header__link_color_accent btn-auth"
+            to={ENDPOINT_SIGNIN}
+          >
+            Войти
+          </Link>
+        </div>
+      );
+    }
+
+    return <Navigation />;
+  }
 
   return (
-    <header className={`header ${islocationBasic ? "header_type_blue" : ""} ${(islocationPrivateIn || islocationPrivateUp) ? "header_type_private" : ""}`}>
-      <NavLink className="header__logo-click" to={"/"}>
-        <img
-          className="header__logo"
-          src={logo}
-          alt="Логотип"
+    <>
+      <header className={`${islocationBasic ? "header" : "header_type_private"}`}>
+        <div className="wrapper header__wrapper">
+          <Logo />
+          {renderHeaderMenu()}
+        </div>
+      </header>
+      <Outlet />
+      {isMobileWidth && (
+        <HamburgerMenu
+          isModalWindowOpened={isModalWindowOpened}
+          setIsModalWindowOpened={setIsModalWindowOpened}
+          isHamburgerMenuOpened={isHamburgerMenuOpened}
+          setIsHamburgerMenuOpened={setIsHamburgerMenuOpened}
         />
-      </NavLink>
-      {!(islocationPrivateIn || islocationPrivateUp) && <Navigation islogOn={props.islogOn} />}
-    </header>
+      )}
+    </>
   );
 }
 

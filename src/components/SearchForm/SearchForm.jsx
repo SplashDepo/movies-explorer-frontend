@@ -1,68 +1,77 @@
-import React from 'react';
-import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
-import './SearchForm.css';
+import React, { useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import "./SearchForm.css"
 
-function SearchForm() {
+import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+
+import { ENDPOINT_SAVED_MOVIES } from "../../utils/constants";
+
+function SearchForm({
+  onSearch,
+  setIsSearchRequestInProgress,
+  searchFormValue,
+  onFilter,
+  isFilterCheckboxChecked,
+  valueRequired,
+  prevValue,
+  setPrevValue,
+}) {
+  const location = useLocation();
+
+  const movie = useRef("");
+  const [isSearchFormValid, setIsSearchFormValid] = useState(true);
   function handleSubmit(evt) {
     evt.preventDefault();
+
+    const { value } = movie.current;
+    if (value === prevValue) return;
+
+    if (!value.trim() && location.pathname !== ENDPOINT_SAVED_MOVIES) {
+      setIsSearchFormValid(false);
+    } else {
+      setIsSearchFormValid(true);
+      onSearch(value);
+      setIsSearchRequestInProgress(true);
+      setPrevValue(value);
+    }
   }
 
   return (
-    <>
-      <div className="form__desctop">
+    <section className="search" aria-label="Поисковая форма фильмов">
+      <div className="wrapper search__wrapper">
         <form
-          onSubmit={handleSubmit}
-          name="search-films"
-          className="form-search">
-          <div className="search-films__container search-films__container_decktop">
-            <input
-              id="search"
-              name="search"
-              type="text"
-              className="search-films__input"
-              required
-              minLength="2"
-              placeholder="Фильм"
-            />
-            <button
-              type="submit"
-              aria-label="Кнопка поиска фильмов"
-              className="search-films__submit"
-            >Найти
-            </button>
-          </div>
-        </form>
-      </div>
-      <FilterCheckbox />
-
-      <div className="form__modile">
-        <form
-          onSubmit={handleSubmit}
-          name="search-films"
+          className="search-film"
+          name="search-film"
           noValidate
-          className="form-search">
-          <div className="search-films__container">
-            <svg className="search-films__icon"></svg>
+          onSubmit={handleSubmit}
+        >
+          <div className="search-film__wrapper">
             <input
-              id="search"
-              name="search"
+              className="search-film__input"
+              ref={movie}
               type="text"
-              className="search-films__input"
-              required
               placeholder="Фильм"
+              defaultValue={searchFormValue}
+              required={valueRequired ?? false}
             />
             <button
+              className="search-film__btn"
               type="submit"
-              aria-label="Кнопка поиска фильмов"
-              className="search-films__submit"
-            >
-            </button>
+              aria-label="Поиск фильмов"
+            >Найти</button>
           </div>
-          <FilterCheckbox />
+          <span
+            className={`search-film__error${(!isSearchFormValid && " search-film__error_visible") || ""}`}
+          >
+            Нужно ввести ключевое слово
+          </span>
         </form>
+        <FilterCheckbox
+          onFilter={onFilter}
+          isFilterCheckboxChecked={isFilterCheckboxChecked}
+        />
       </div>
-    </>
-
+    </section>
   );
 }
 

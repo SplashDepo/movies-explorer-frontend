@@ -1,29 +1,49 @@
-import React from 'react';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Preloader from '../Preloader/Preloader.jsx';
-import './Movies.css';
+import React, { useState } from "react";
 
-function Movies(props) {
+
+import SearchForm from "../SearchForm/SearchForm";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import Footer from "../Footer/Footer";
+
+function Movies({
+  movies,
+  onSearch,
+  setIsSearchRequestInProgress,
+  searchFormValue,
+  hasUserSearched,
+  onFilter,
+  isFilterCheckboxChecked,
+  onMovieSelect,
+  onLoad,
+  error,
+}) {
+  const [prevValueMovies, setPrevValueMovies] = useState("");
+
   return (
-    <section className="content movies">
-      <SearchForm
-        onMoviesSearch={props.onMoviesSearch}
-        onMoviesFilter={props.onMoviesFilter}
-        isIncludedFilter={props.isIncludedFilter}
-      />
-      {/* {!props.isSearching && <Preloader />} */}
-      <MoviesCardList
-        isVisibleMovies={props.isVisibleMovies}
-        isAllMovies={props.isAllMovies}
-        isErrorMovies={props.isErrorMovies}
-        isSearching={props.isSearching}
-        storedMovies={props.storedMovies}
-        onOtherVisibleMovies={props.onOtherVisibleMovies}
-
-      />
-    </section>
+    <>
+      <main>
+        <SearchForm
+          onSearch={onSearch}
+          setIsSearchRequestInProgress={setIsSearchRequestInProgress}
+          searchFormValue={searchFormValue}
+          onFilter={onFilter}
+          isFilterCheckboxChecked={isFilterCheckboxChecked}
+          valueRequired={true}
+          prevValue={prevValueMovies}
+          setPrevValue={setPrevValueMovies}
+        />
+        <MoviesCardList
+          movies={movies}
+          onMovieSelect={onMovieSelect}
+          onLoad={onLoad}
+          hasUserSearched={hasUserSearched}
+          error={error}
+        />
+      </main>
+      <Footer />
+    </>
   );
 }
+
 
 export default Movies;

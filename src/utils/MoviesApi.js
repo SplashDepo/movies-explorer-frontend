@@ -1,16 +1,14 @@
-export const MOVIES_URL = 'https://api.nomoreparties.co/beatfilm-movies';
+import { URL_BEATFILM_MOVIES } from "./constants.js";
 
-// возврат ответа сервера об ошибке
-const handleResponse = (res) => {
+function checkResponse(res) {
   if (res.ok) {
     return res.json();
+  } else {
+    Promise.reject(`Ошибка: ${res.status}/${res.statusText}`);
   }
-  return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-// получение всех фильмов
-export const getMovies = () => {
-  return fetch(`${MOVIES_URL}`, {
-  })
-    .then(response => handleResponse(response));
+export function getMovies() {
+  return fetch(URL_BEATFILM_MOVIES)
+    .then((res) => checkResponse(res))
 }
