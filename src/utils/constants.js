@@ -1,4 +1,4 @@
-export const URL_BASE = "http://localhost:3001";
+export const URL_BASE = "https://api.splash.movies.nomoredomains.xyz";
 export const URL_BEATFILM_MOVIES = "https://api.nomoreparties.co/beatfilm-movies";
 
 export const ENDPOINT_ROOT = "/";
