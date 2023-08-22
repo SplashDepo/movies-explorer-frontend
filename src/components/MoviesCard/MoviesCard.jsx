@@ -1,80 +1,45 @@
-import React, { useState } from 'react';
-import { isMobile } from 'react-device-detect';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 import './MoviesCard.css';
 
-function MoviesCard(props) {
+function MoviesCard({ movie, onMovieSelect }) {
   const location = useLocation();
-  const isLocationMoviesSaved = location.pathname === '/saved-movies';
+  const islocationSaved = location.pathname === '/saved-movies';
+  const { nameRU, duration, trailerLink, image, selected } = movie;
 
-  const [isAddCard, setAddACardSaved] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  let cardSaveButtonClassName = `card__emotion ${isAddCard ? "card__emotion_active" : "card__emotion"}`;
+  function countTime(duration) {
+    const time = duration / 60;
+    const hours = Math.floor(time);
+    const minutes = duration - hours * 60;
 
-  function handleAddSaved() {
-    isAddCard ? setAddACardSaved(false) : setAddACardSaved(true);
+    if (hours && minutes) return `${hours}ч ${minutes}м`;
+
+    return hours ? `${hours}ч` : `${minutes}м`;
   }
 
-  function handleDeleteSaved() {
-    setAddACardSaved(false);
-  }
-
-  function handleDeleteButtonVisible() {
-    setIsDelete(true);
-    return;
-  }
-
-  function handleDeleteeButtonHidden() {
-    setIsDelete(false);
-    return;
-  }
-
-  function handleMovieLength() {
-    const duration = {};
-    duration['hours'] = Math.floor(props.movie.duration / 60);
-    duration['minutes'] = props.movie.duration % 60;
-    return duration;
-  }
+  const windowWidth = useWindowDimensions();
 
   return (
-    <li onMouseOver={handleDeleteButtonVisible} onMouseLeave={handleDeleteeButtonHidden} className="card">
-      <a
-        href={props.movie.trailerLink}
-        target="_blank"
-        className="card__trailer"
-        rel="noopener noreferrer"
-      >
+    <article className="movies-card">
+      <a className="link movies-card__link" href={trailerLink} rel="noreferrer" target="_blank">
         <img
-          className="card__image"
-          src={props.movie.link}
-          alt={props.movie.name} />
+          className="movies-card__photo"
+          src={(image?.url && `https://api.nomoreparties.co${image?.url}`) || image}
+          alt={`Постер фильма "${nameRU}"`}
+        />
       </a>
-
-      <div className="card__description">
-        <div className="card__info">
-          <h2 className="card__title">{props.movie.name}</h2>
-          {!isLocationMoviesSaved &&
-            <button
-              type="button"
-              aria-label="Кнопка добавления в сохраненные"
-              className={cardSaveButtonClassName}
-              onClick={handleAddSaved}
-            ></button>
-          }
-          {isLocationMoviesSaved &&
-            <button
-              type="button"
-              aria-label="Кнобка удаления из сохраненных"
-              className={`card__close ${(isDelete || isMobile) ? "card__close_visible" : "card__close_hidden"} `}
-              onClick={handleDeleteSaved}
-            ></button>
-          }
-        </div>
-        <p className="card__length">{`${handleMovieLength().hours !== 0 ? `${handleMovieLength().hours}ч ` : ""} ${handleMovieLength().minutes}м`}
-        </p>
+      <div className="movies-card__description">
+        <h2 className="movies-card__heading">{nameRU}</h2>
+        <button
+          className={` movies-card__btn-favourite ${(selected && ' movies-card__btn-favourite_active') || ''
+            } ${islocationSaved ? 'movies-card__btn-favourite_deleted' : ''}`}
+          type="button"
+          aria-label="Добавление карточки с фильмом в избранные"
+          onClick={(evt) => onMovieSelect(evt, movie)}></button>
       </div>
-
-    </li>
+      <span className="movies-card__duration">{countTime(duration)}</span>
+    </article>
   );
 }
 

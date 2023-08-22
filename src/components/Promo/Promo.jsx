@@ -5,15 +5,6 @@ import world from '../../images/world.svg'
 
 function Promo() {
 
-  //   const ref = React.useRef(null);
-
-  // function scrollThrough() {
-  //   ref.current.scrollIntoView({ behavior: "smooth" });
-  // }
-
-
-
-
   return (
     <section className="promo">
       <div className="promo__container">
@@ -23,8 +14,6 @@ function Promo() {
           type="button"
           aria-label="посмотреть проект"
           className="promo__button"
-        // ref={ref}
-        // onClick={scrollThrough}
         >Узнать больше</button>
       </div>
       <img
