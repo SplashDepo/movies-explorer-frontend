@@ -1,15 +1,15 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import "./Navigation.css"
+import React from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import './Navigation.css';
 
-import useWindowDimensions from "../../hooks/useWindowDimensions.js";
+import useWindowDimensions from '../../hooks/useWindowDimensions.js';
 
 import {
   ENDPOINT_ROOT,
   ENDPOINT_MOVIES,
   ENDPOINT_SAVED_MOVIES,
   ENDPOINT_PROFILE,
-} from "../../utils/constants.js";
+} from '../../utils/constants.js';
 
 function Navigation() {
   const isMobileWidth = useWindowDimensions() <= 768;
@@ -17,11 +17,11 @@ function Navigation() {
   const links = [
     {
       path: ENDPOINT_MOVIES,
-      label: "Фильмы",
+      label: 'Фильмы',
     },
     {
       path: ENDPOINT_SAVED_MOVIES,
-      label: "Сохранённые фильмы",
+      label: 'Сохранённые фильмы',
     },
   ];
 
@@ -29,11 +29,8 @@ function Navigation() {
     return (
       <li key={label}>
         <NavLink
-          className={({ isActive }) =>
-            `link nav__link${(isActive && " nav__link-active") || ""}`
-          }
-          to={path}
-        >
+          className={({ isActive }) => `link nav__link${(isActive && ' nav__link-active') || ''}`}
+          to={path}>
           {label}
         </NavLink>
       </li>
@@ -44,7 +41,7 @@ function Navigation() {
     <div className="layout-nav">
       <nav className="nav">
         <ul className="list nav__list">
-          {isMobileWidth && createNavLink(ENDPOINT_ROOT, "Главная")}
+          {isMobileWidth && createNavLink(ENDPOINT_ROOT, 'Главная')}
           {links.map(({ path, label }) => createNavLink(path, label))}
         </ul>
       </nav>

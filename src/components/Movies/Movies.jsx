@@ -21,7 +21,7 @@ function Movies({
 
   return (
     <>
-      <main>
+      <main className="container">
         <SearchForm
           onSearch={onSearch}
           setIsSearchRequestInProgress={setIsSearchRequestInProgress}

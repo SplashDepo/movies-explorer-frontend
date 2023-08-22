@@ -1,15 +1,28 @@
 .header {
   background-color: #073042;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 60px;
 }
 
-.header__wrapper {
+.header_type_private {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 44px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+/* .header__wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
   column-gap: 44px;
   padding: 18px 0;
   margin: 0 60px 0;
-}
+} */
 
 .header__auth {
   display: flex;

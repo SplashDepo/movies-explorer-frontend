@@ -7,7 +7,6 @@
 
 .nav {
   display: flex;
-
 }
 
 .nav__list {
@@ -20,7 +19,7 @@
 }
 
 .nav__link {
-  color: #FFF;
+  color: #ffffff66;
   text-align: right;
   font-family: Inter, Helvetica, sans-serif;
   font-size: 13px;
@@ -30,10 +29,14 @@
   text-decoration: none;
 }
 
+.nav__link-active {
+  color: #fff
+}
+
 .link-profile {
   padding-right: 33px;
   position: relative;
-  color: #FFF;
+  color: #fff;
   text-align: right;
   font-family: Inter, Helvetica, sans-serif;
   font-size: 13px;
@@ -43,13 +46,13 @@
 }
 
 .link-profile::before {
-  content: "";
+  content: '';
   width: 26px;
   height: 26px;
   position: absolute;
   top: -3px;
   right: 0;
-  background: url("../../images/icon/account.svg") center no-repeat, #313131;
+  background: url('../../images/icon/account.svg') center no-repeat, #313131;
   border-radius: 50px;
 }
 
@@ -68,6 +71,7 @@
   .nav__link {
     font-size: 18px;
     font-weight: 500;
+    color: #fff
   }
 
   .nav__link-active {

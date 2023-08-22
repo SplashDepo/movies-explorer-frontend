@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from 'react';
 
-import SearchForm from "../SearchForm/SearchForm.jsx";
-import MoviesCardList from "../MoviesCardList/MoviesCardList.jsx";
-import Footer from "../Footer/Footer.jsx";
+import SearchForm from '../SearchForm/SearchForm.jsx';
+import MoviesCardList from '../MoviesCardList/MoviesCardList.jsx';
+import Footer from '../Footer/Footer.jsx';
 
 function SavedMovies({
   movies,
@@ -14,11 +14,12 @@ function SavedMovies({
   onFilter,
   isFilterCheckboxChecked,
 }) {
-  const [prevValueSavedMovies, setPrevValueSavedMovies] = useState("");
+
+  const [prevValueSavedMovies, setPrevValueSavedMovies] = useState('');
 
   return (
     <>
-      <main>
+      <main className='container'>
         <SearchForm
           onSearch={onSearch}
           searchFormValue={searchFormValue}

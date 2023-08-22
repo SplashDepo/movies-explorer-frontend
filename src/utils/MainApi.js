@@ -4,14 +4,14 @@ import {
   ENDPOINT_SIGNIN,
   ENDPOINT_USERS_CURRENT,
   ENDPOINT_MOVIES,
-} from "./constants";
+} from './constants';
 
 // User
 export function registerUser(email, password, name) {
   return fetch(`${URL_BASE}${ENDPOINT_SIGNUP}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password, name }),
   });
@@ -19,9 +19,9 @@ export function registerUser(email, password, name) {
 
 export function authorizeUser(email, password) {
   return fetch(`${URL_BASE}${ENDPOINT_SIGNIN}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password }),
   });
@@ -30,20 +30,32 @@ export function authorizeUser(email, password) {
 export function getUserInfo(token) {
   return fetch(`${URL_BASE}${ENDPOINT_USERS_CURRENT}`, {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
   })
-    .then((res) => res.json())
-    .then((data) => data);
+    .then((res) => {
+      try {
+
+        if (res.status === 401) {
+          localStorage.removeItem('jwt');
+        } else return res.json();
+      } catch (e) {
+        console.error(e);
+      }
+    })
+    .then((data) => data)
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 export function setUserInfo(email, name) {
   return fetch(`${URL_BASE}${ENDPOINT_USERS_CURRENT}`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
     },
     body: JSON.stringify({ email, name }),
   });
@@ -53,13 +65,13 @@ export function setUserInfo(email, name) {
 export function getSavedMovies() {
   return fetch(`${URL_BASE}${ENDPOINT_MOVIES}`, {
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
     },
   }).then((res) => {
-    if (res.ok) {
+    try {
       return res.json();
-    } else {
+    } catch (e) {
       Promise.reject(`Ошибка: ${res.status}/${res.statusText}`);
     }
   });
@@ -67,6 +79,7 @@ export function getSavedMovies() {
 
 export function handleMovieServer(movie) {
   const selected = movie?.selected;
+
 
   if (selected) {
     const {
@@ -86,10 +99,10 @@ export function handleMovieServer(movie) {
     image = `https://api.nomoreparties.co${image.url}`;
 
     return fetch(`${URL_BASE}${ENDPOINT_MOVIES}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
       body: JSON.stringify({
         country,
@@ -106,15 +119,12 @@ export function handleMovieServer(movie) {
       }),
     });
   } else {
-    return fetch(
-      `${URL_BASE}${ENDPOINT_MOVIES}/${movie.dbId || movie._id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-        },
-      }
-    );
+    return fetch(`${URL_BASE}${ENDPOINT_MOVIES}/${movie.dbId || movie._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    });
   }
 }
